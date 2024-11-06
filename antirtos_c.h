@@ -21,25 +21,25 @@
 #endif
 	
 #ifndef fQP
-#define fQP(q, Q_SIZE, param_type)                                              \
-    void (*q##_funcs[Q_SIZE])(param_type);                                      \
-    param_type q##_params[Q_SIZE];                                              \
-    volatile int q##_last = 0;                                                  \
-    int q##_first = 0;                                                          \
-    int q##_Push(void (*func)(param_type), param_type params) {                 \
-        if ((q##_last + 1) % Q_SIZE == q##_first)                               \
-            return 1; /* Queue is full */                                       \
-        q##_funcs[q##_last] = func;                                             \
-        q##_params[q##_last++] = params;                                        \
-        q##_last %= Q_SIZE;                                                     \
-        return 0; /* Success */                                                 \
-    }                                                                           \
-    int q##_Pull(void) {                                                        \
-        if (q##_last == q##_first)                                              \
-            return 1; /* Queue is empty */                                      \
-        q##_funcs[q##_first](q##_params[q##_first++]);                          \
-        q##_first %= Q_SIZE;                                                    \
-        return 0; /* Success */                                                 \
+#define fQP(q, Q_SIZE, param_type)                              \
+    void (*q##_funcs[Q_SIZE])(param_type);                      \
+    param_type q##_params[Q_SIZE];                              \
+    volatile int q##_last = 0;                                  \
+    int q##_first = 0;                                          \
+    int q##_Push(void (*func)(param_type), param_type params) { \
+        if ((q##_last + 1) % Q_SIZE == q##_first)               \
+            return 1; /* Queue is full */                       \
+        q##_funcs[q##_last] = func;                             \
+        q##_params[q##_last++] = params;                        \
+        q##_last %= Q_SIZE;                                     \
+        return 0; /* Success */                                 \
+    }                                                           \
+    int q##_Pull(void) {                                        \
+        if (q##_last == q##_first)                              \
+            return 1; /* Queue is empty */                      \
+        q##_funcs[q##_first](q##_params[q##_first++]);          \
+        q##_first %= Q_SIZE;                                    \
+        return 0; /* Success */                                 \
     }
 #endif	
 //-8<--8<--8<--ANTIRTOS_C END --8<--8<--8<--8<---
