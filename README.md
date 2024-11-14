@@ -1,6 +1,6 @@
 # ANTIRTOS_C
 No RTOS need, you will C! 
-Exteamly light, pure C preprocessor macros based universal C++ library designed for task management in IoT and embedded applications. It is coded in a single, small file, making it incredibly easy to integrate into your projects. Enjoy the real simplicity!  
+Exteamly light, pure C preprocessor macros based universal C library designed for task management in IoT and embedded applications. It is coded in a single, small file, making it incredibly easy to integrate into your projects. Enjoy the real simplicity!  
 Also: [here](https://hackaday.io/project/199046-antirtosc)
 ## Conveyers of function pointers without parameters
 Usage
