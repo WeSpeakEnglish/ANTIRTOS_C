@@ -6,6 +6,7 @@ Also: [here](https://hackaday.io/project/199046-antirtosc)
 Usage
 ### 1. Define your tasks:
 ```c
+#include <antirtos_c.h>
 void yourTaskOne(){
 //put here what ever you want to execute
 }
