@@ -1,5 +1,4 @@
 //-8<--8<--8<--ANTIRTOS_C BEGIN--8<--8<--8<--8<---
-#ifndef fQ
 #define fQ(q, Q_SIZE)                            \
     volatile int q##_last = 0;                   \
     int q##_first = 0;                           \
@@ -18,9 +17,7 @@
         q##_first %= Q_SIZE;                     \
         return 0;                                \
     }
-#endif
 	
-#ifndef fQP
 #define fQP(q, Q_SIZE, param_type)                              \
     void (*q##_funcs[Q_SIZE])(param_type);                      \
     param_type q##_params[Q_SIZE];                              \
@@ -41,5 +38,4 @@
         q##_first %= Q_SIZE;                                    \
         return 0; /* Success */                                 \
     }
-#endif	
 //-8<--8<--8<--ANTIRTOS_C END --8<--8<--8<--8<---
