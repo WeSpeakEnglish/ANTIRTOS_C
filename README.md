@@ -1,4 +1,4 @@
-# ANTIRTOS_C
+# ANTIRTOS/C
 <img src="https://github.com/WeSpeakEnglish/images/blob/main/ANTIRTOS_C.png">
 
 No RTOS need, you will C! 
