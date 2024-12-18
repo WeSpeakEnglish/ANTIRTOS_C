@@ -14,7 +14,7 @@
             return 1; /* Queue is empty */       \
         q##_Queue[q##_first++]();                \
         q##_first %= Q_SIZE;                     \
-        return 0;  /* Success */ 				 \
+        return 0;  /* Success */ 		 \
     }
 
 #define del_fQ(q, Q_SIZE)                                           \
@@ -58,7 +58,7 @@
         return result;                                              \
     }
 	
-	#define fQP(q, Q_SIZE, param_type)                                          \
+	#define fQP(q, Q_SIZE, param_type)                                      \
     void (*q##_funcs[Q_SIZE])(param_type);                                      \
     param_type q##_params[Q_SIZE];                                              \
     volatile int q##_last = 0;                                                  \
