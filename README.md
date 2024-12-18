@@ -6,7 +6,14 @@ Exteamly light, pure C preprocessor macros-based universal C library designed fo
 Also: [here](https://hackaday.io/project/199046-antirtosc)
 ## Conveyers of function pointers without parameters
 Usage
-### 1. Define your tasks:
+
+```
+### 1. Initialize needed queues like global prototypes (as many as you need, here are two like example):
+```c
+  fQ(Q1,8); // define first queue (type fQ) with name Q1, 8 elements length
+  fQ(Q2,8);   // define second queue (type fQ) with name Q2, 8 elements length
+```
+### 2. Define your tasks:
 ```c
 #include <antirtos_c.h>
 void yourTaskOne(){
@@ -16,12 +23,6 @@ void yourTaskOne(){
 void yourTaskTwo(){
 //put here what ever you want to execute
 }
-```
-### 2. Initialize needed queues like global prototypes (as many as you need, here are two like example):
-```c
-  fQ(Q1,8); // define first queue (type fQ) with name Q1, 8 elements length
-  fQ(Q2,8);   // define second queue (type fQ) with name Q2, 8 elements length
-```
 
 ### 3. In main loop (loop{} instead of main(){} for Arduino) just pull from the queues
 ```c
@@ -44,7 +45,13 @@ void ISR_2(){
 ## Conveyers of pointers of functions with parameters
 Imagine now you need to pass parameters to functions in queue
 
-### 1. Define all your tasks, for example:
+
+### 1. Define all your queues:
+```c
+ fQP(Q1,8,int);  //Q1 is 8 elements length, type fQP, functions receive int
+ fQP(Q2,8,char); //Q2 is 8 elements length, type fQP, functions receive char
+```
+### 2. Define all your tasks, for example:
 ```c
 #include <antirtos_c.h>
 void blinkLED(int led){
@@ -61,13 +68,6 @@ void printSymbol(char ch){
  printf("Symbol: %c\n", ch);
 }
 ```
-
-### 2. Define all your queues:
-```c
- fQP(Q1,8,int);  //Q1 is 8 elements length, type fQP, functions receive int
- fQP(Q2,8,char); //Q2 is 8 elements length, type fQP, functions receive char
-```
-
 ### 3. In main loop (loop{} instead of main(){} for Arduino) just add:
 ```c
 void main(){
