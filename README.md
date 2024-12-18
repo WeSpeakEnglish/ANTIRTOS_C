@@ -32,10 +32,10 @@ void main(){ // or loop{} for Arduino
 ```
 ### 4. Wherever you want, you can now push your tasks, they will be handled! (for example in some interrupts)
 ```c
-void ISR_1{
+void ISR_1(){
   Q1_Push(yourTaskOne);  // just push your task into queue!
 }
-void ISR_2{
+void ISR_2(){
   Q2_Push(yourTaskTwo);  // just push your task into queue!
 }
 ```
