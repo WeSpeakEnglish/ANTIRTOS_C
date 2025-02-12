@@ -114,25 +114,26 @@ void main(void){
 ```
 ## Conveyers of pointers of delayed functions without parameters
 Do you need just to delay some function from execution? Do not wait any more! 
-1. Initialize:
+### 1. Initialize:
 ```c
 del_fQ(Q4,8); //Q4 is 8 elements length delayed queue
 ```
-2. Put where you want your tasks into queue, specifying delay (here example of 2 functions put into queue):
+### 2. Put where you want your tasks into queue, specifying delay (here example of 2 functions put into queue):
 ```c
 Q4_Push_delayed(your_func_1, 1000); // function your_func_1() will be delayed for 1000 'ticks' (see calling Q4_Tick below)
 Q4_Push_delayed(your_func_2, 2000); // function your_func_2() will be delayed for 2000 'ticks'
 ```
-3. I the main loop (in lopp(){} for Arduino) just need to:
+### 3. I the main loop (in lopp(){} for Arduino) just need to:
 ```c
 Q4_Pull();
 ```
-4. In some timer or periodic function:
+### 4. In some timer or periodic function:
 ```c
 Q4_Tick();
 ```
 That is it! 
-If you need to revoke a function from the delayed conveyer, use revocation, for example, need to revoke *your_func_1*:
+### 5. If you need to revoke a function from the delayed conveyer, use revocation 
+For example, you need to revoke **your_func_1**:
 ```c
 Q4_Revoke(your_func_1);
 ```
