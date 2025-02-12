@@ -42,7 +42,7 @@ void ISR_2(){
 ```
 *This is it! All the interrupts are kept extreamly fast, all the task handled*
 
-## Conveyers of pointers of functions with parameters
+## Conveyers of function pointers with parameters
 Imagine now you need to pass parameters to functions in queue
 
 
@@ -137,6 +137,6 @@ For example, you need to revoke **your_func_1**:
 ```c
 Q4_Revoke(your_func_1);
 ```
-All the functions will be handled automatically
+All functions are handled and executed automatically. Do not waste time—keep interrupts extremely fast and never lose them!
    
 
