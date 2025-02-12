@@ -112,7 +112,7 @@ void main(void){
   Q3_Pull();
 }
 ```
-## Conveyers of pointers of delayed functions withot parameters
+## Conveyers of pointers of delayed functions without parameters
 Do you need just to delay some function from execution? Do not wait any more! 
 1. Initialize:
 ```c
