@@ -24,7 +24,7 @@ void yourTaskTwo(){
 //put here what ever you want to execute
 }
 ```
-### 3. In main loop (loop{} instead of main(){} for Arduino) just pull from the queues
+### 3. In main loop (loop(){} instead of main(){} for Arduino) just pull from the queues
 ```c
 void main(){ // or loop{} for Arduino
   Q1_Pull(); // pull from the Q1 and execute
@@ -123,7 +123,7 @@ del_fQ(Q4,8); //Q4 is 8 elements length delayed queue
 Q4_Push_delayed(your_func_1, 1000); // function your_func_1() will be delayed for 1000 'ticks' (see calling Q4_Tick below)
 Q4_Push_delayed(your_func_2, 2000); // function your_func_2() will be delayed for 2000 'ticks'
 ```
-### 3. I the main loop (in lopp(){} for Arduino) just need to:
+### 3. In the main loop (in lopp(){} for Arduino) just need to:
 ```c
 Q4_Pull();
 ```
@@ -137,6 +137,6 @@ For example, you need to revoke **your_func_1**:
 ```c
 Q4_Revoke(your_func_1);
 ```
-All functions are handled and executed automatically. Do not waste time—keep interrupts extremely fast and never lose them!
+**All functions are handled and executed automatically. Do not waste time—keep interrupts extremely fast and never lose them! Use ANTIRTOS**
    
 
