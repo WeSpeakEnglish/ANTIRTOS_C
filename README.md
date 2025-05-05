@@ -45,7 +45,7 @@ void ISR_2(){
 ```
 *This is it! All the interrupts are kept extreamly fast, all the task handled*
 
-## Conveyers of function pointers with parameters
+## Conveyers of function pointers with parameter
 Imagine now you need to pass parameters to functions in queue
 
 
@@ -78,7 +78,7 @@ void main(){
   Q2_Pull();  // pull from the Q2 and execute
 }
 ```
-### 4. Where you want just push the tasks into queues and pass them parameters (for example in some interrupts again):
+### 4. Where you want just push the tasks into queues and pass them parameter (for example in some interrupts again):
 ```c
 void ISR_1(void){
   Q1_Push(blinkLED, 0); // just push your task into Q1 queue and parameter!
@@ -115,7 +115,7 @@ void main(void){
   Q3_Pull();
 }
 ```
-## Conveyers of pointers of delayed functions without parameters
+## Delayed conveyers of pointers of functions without parameters
 Do you need just to delay some function from execution? Do not wait any more! 
 ### 1. Initialize:
 ```c
@@ -140,6 +140,33 @@ For example, you need to revoke **your_func_1**:
 ```c
 Q4_Revoke(your_func_1);
 ```
+
+## Delayed conveyers of pointers of functions with parameter
+Do you need just to delay some function from execution? Do not wait any more! 
+### 1. Initialize:
+```c
+del_fQP(Q5,8,int); //Q4 is 8 elements length delayed queue, int is example type of parameter - it may be your structure or standard one (float, int, long, char...)
+```
+### 2. Put where you want your tasks into queue, specifying delay (here example of 2 different functions put into the same queue):
+```c
+Q4_Push_delayed(your_func_4, -15, 1000); // function your_func_4(-15) will be delayed for 1000 'ticks' (see calling Q4_Tick below), -15 here is parameter of *int* type
+Q4_Push_delayed(your_func_5, -27, 2000); // function your_func_5(-27) will be delayed for 2000 'ticks', -27 here is parameter of *int* type
+```
+### 3. In the main loop (in lopp(){} for Arduino) just need to:
+```c
+Q5_Pull();
+```
+### 4. In some timer or periodic function:
+```c
+Q5_Tick();
+```
+That is it! 
+### 5. If you need to revoke a function from the delayed conveyer, use revocation 
+For example, you need to revoke **your_func_4**:
+```c
+Q5_Revoke(your_func_4);
+```
+
 **All functions are handled and executed automatically. Do not waste time—keep interrupts extremely fast and never lose them! Use ANTIRTOS**
    
 
