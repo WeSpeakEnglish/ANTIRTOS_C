@@ -7,7 +7,7 @@ Also: [here](https://hackaday.io/project/199046-antirtosc)
 
 Prefer C++? It is [ANTIRTOS C++ library](https://github.com/WeSpeakEnglish/ANTIRTOS) here and also fresh new [ANTIRTOS_MODERN](https://github.com/WeSpeakEnglish/ANTIRTOS_MODERN)
 
-## Conveyers of function pointers without parameters
+## Conveyers of functions without parameters
 
 ### Usage
 
@@ -45,7 +45,7 @@ void ISR_2(){
 ```
 *This is it! All the interrupts are kept extreamly fast, all the task handled*
 
-## Conveyers of function pointers with parameter
+## Conveyers of functions with parameters
 Imagine now you need to pass parameters to functions in queue
 
 
@@ -115,7 +115,7 @@ void main(void){
   Q3_Pull();
 }
 ```
-## Delayed conveyers of pointers of functions without parameters
+## Delayed conveyers of functions without parameters
 Do you need just to delay some function from execution? Do not wait any more! 
 ### 1. Initialize:
 ```c
@@ -141,7 +141,7 @@ For example, you need to revoke **your_func_1**:
 Q4_Revoke(your_func_1);
 ```
 
-## Delayed conveyers of pointers of functions with parameter
+## Delayed conveyers of functions with parameters
 Do you need just to delay some function from execution? Do not wait any more! 
 ### 1. Initialize:
 ```c
