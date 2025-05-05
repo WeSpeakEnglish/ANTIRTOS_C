@@ -79,4 +79,45 @@
         return 0; /* Success */                                                 \
     }
 	
+#define del_fQP(q, Q_SIZE, param_type)                                                  \
+    int q##_time;                                                                       \
+    void (*q##_del_fQueue[Q_SIZE])(param_type);                                         \
+    param_type q##_del_params[Q_SIZE];                                                  \
+    int q##_execArr[Q_SIZE] = { 0 };   	                                                \
+    int q##_execTime[Q_SIZE];                                                           \
+    fQP(q, Q_SIZE, param_type)                                                          \
+    int q##_Push_delayed(void (*func)(param_type), param_type params, int delayTime){   \
+        int q##_fullQ = 1;                                                              \
+        for (int i = 0; i < Q_SIZE; i++) {                                              \
+            if (!q##_execArr[i]) {                                                      \
+                q##_del_fQueue[i] = func;                                               \
+                q##_del_params[i] = params;                                             \
+                q##_execArr[i] = 1;                                                     \
+                q##_execTime[i] = q##_time + delayTime;                                 \
+                q##_fullQ = 0;                                                          \
+                break;                                                                  \
+            }                                                                           \
+        }                                                                               \
+        return q##_fullQ;                                                               \
+    }                                                                                   \
+    void q##_tick(void){                                                                \
+        for (int i = 0; i < Q_SIZE; i++) {                                              \
+            if ( q##_execTime[i] == q##_time){                                          \
+                if (q##_execArr[i]) {                                                   \
+                    q##_Push(q##_del_fQueue[i], q##_del_params[i]);                     \
+                    q##_execArr[i] = 0;                                                 \
+                }                                                                       \
+            }                                                                           \
+        }                                                                               \
+    }                                                                                   \
+    int q##_revoke(void (*func)(param_type)){                                           \
+        int result = 1;                                                                 \
+        for (int i = 0; i < Q_SIZE; i++) {                                              \
+            if (q##_del_fQueue[i] == func) {                                            \
+                q##_execArr[i] = false;                                                 \
+                result = 0;                                                             \
+            }                                                                           \
+        }                                                                               \
+        return result;                                                                  \
+    }
 	
