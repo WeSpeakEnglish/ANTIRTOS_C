@@ -149,8 +149,8 @@ del_fQP(Q5,8,int); //Q4 is 8 elements length delayed queue, int is example type 
 ```
 ### 2. Put where you want your tasks into queue, specifying delay (here example of 2 different functions put into the same queue):
 ```c
-Q4_Push_delayed(your_func_4, -15, 1000); // function your_func_4(-15) will be delayed for 1000 'ticks' (see calling Q4_Tick below), -15 here is parameter of *int* type
-Q4_Push_delayed(your_func_5, -27, 2000); // function your_func_5(-27) will be delayed for 2000 'ticks', -27 here is parameter of *int* type
+Q5_Push_delayed(your_func_4, -15, 1000); // function your_func_4(-15) will be delayed for 1000 'ticks' (see calling Q4_Tick below), -15 here is parameter of *int* type
+Q5_Push_delayed(your_func_5, -27, 2000); // function your_func_5(-27) will be delayed for 2000 'ticks', -27 here is parameter of *int* type
 ```
 ### 3. In the main loop (in lopp(){} for Arduino) just need to:
 ```c
