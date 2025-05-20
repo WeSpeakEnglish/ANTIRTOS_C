@@ -100,7 +100,7 @@
         }                                                                               \
         return q##_fullQ;                                                               \
     }                                                                                   \
-    void q##_tick(void){                                                                \
+    void q##_Tick(void){                                                                \
         for (int i = 0; i < Q_SIZE; i++) {                                              \
             if ( q##_execTime[i] == q##_time){                                          \
                 if (q##_execArr[i]) {                                                   \
