@@ -80,7 +80,7 @@
     }
 	
 #define del_fQP(q, Q_SIZE, param_type)                                                  \
-    int q##_time =0;                                                                    \
+    int q##_time = 0;                                                                    \
     void (*q##_del_fQueue[Q_SIZE])(param_type);                                         \
     param_type q##_del_params[Q_SIZE];                                                  \
     int q##_execArr[Q_SIZE] = { 0 };   	                                                \
