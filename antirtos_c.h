@@ -110,7 +110,7 @@
             }                                                                           \
         }                                                                               \
     }                                                                                   \
-    int q##_revoke(void (*func)(param_type)){                                           \
+    int q##_Revoke(void (*func)(param_type)){                                           \
         int result = 1;                                                                 \
         for (int i = 0; i < Q_SIZE; i++) {                                              \
             if (q##_del_fQueue[i] == func) {                                            \
