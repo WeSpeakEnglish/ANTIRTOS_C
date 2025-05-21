@@ -167,7 +167,8 @@ For example, you need to revoke **your_func_4**:
 Q5_Revoke(your_func_4);
 ```
 
-**All functions are handled and executed automatically. Do not waste time—keep interrupts extremely fast and never lose them! Use ANTIRTOS**
+**All functions are handled and executed automatically. Do not waste time — keep all interrupts extremely fast and never lose them! Use ANTIRTOS!**
+
 See [simulation on Thinkercad](https://www.tinkercad.com/things/dTtzrpBL7Oz/editel?sharecode=ti9rZSVEc3emys0IjcdVw1_BVx3GubWkPB4JmxF4KQs)
    
 
