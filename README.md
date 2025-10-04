@@ -173,6 +173,6 @@ Q5_Revoke(your_func_4);
 
 **All functions are handled and executed automatically. Do not waste time — keep all interrupts extremely fast and never lose them! Use ANTIRTOS!**
 
-See [the press button simulation on Thinkercad](https://www.tinkercad.com/things/dTtzrpBL7Oz-antirtoscuno))
+See [the press button simulation on Thinkercad](https://www.tinkercad.com/things/dTtzrpBL7Oz-antirtoscuno)
    
 
