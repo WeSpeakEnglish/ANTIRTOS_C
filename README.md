@@ -13,12 +13,12 @@ Prefer C++? It is [ANTIRTOS C++ library](https://github.com/WeSpeakEnglish/ANTIR
 
 ### 1. Initialize needed queues like global prototypes (as many as you need, here are two like example):
 ```c
+#include <antirtos_c.h>
   fQ(Q1,8); // define first queue (type fQ) with name Q1, 8 elements length
   fQ(Q2,8);   // define second queue (type fQ) with name Q2, 8 elements length
 ```
 ### 2. Define your tasks:
 ```c
-#include <antirtos_c.h>
 void yourTaskOne(){
 //put here what ever you want to execute
 }
