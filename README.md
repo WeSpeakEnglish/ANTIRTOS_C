@@ -14,8 +14,8 @@ Prefer C++? It is [ANTIRTOS C++ library](https://github.com/WeSpeakEnglish/ANTIR
 ### 1. Initialize needed queues like global prototypes (as many as you need, here are two like example):
 ```c
 #include <antirtos_c.h>
-  fQ(Q1,8); // define first queue (type fQ) with name Q1, 8 elements length
-  fQ(Q2,8);   // define second queue (type fQ) with name Q2, 8 elements length
+  fQ(Q1,8); // define the first queue (type fQ) with name Q1, 8 elements length
+  fQ(Q2,8); // define the second queue (type fQ) with name Q2, 8 elements length
 ```
 ### 2. Define your tasks:
 ```c
@@ -51,6 +51,7 @@ Imagine now you need to pass parameters to functions in queue
 
 ### 1. Define all your queues:
 ```c
+#include <antirtos_c.h>
  fQP(Q1,8,int);  //Q1 is 8 elements length, type fQP, functions receive int
  fQP(Q2,8,char); //Q2 is 8 elements length, type fQP, functions receive char
 ```
@@ -103,6 +104,7 @@ void myTask(pinout p){
 ```
 Now you may initialize your queues, like:
 ```c
+#include <antirtos_c.h>
 fQP(Q3,8,pinout);  //Q3 is 8 elements length, type fQP, functions receive type 'pinout'
 ```
 Push parameters now like:
@@ -119,6 +121,7 @@ void main(void){
 Do you need just to delay some function from execution? Do not wait any more! 
 ### 1. Initialize:
 ```c
+#include <antirtos_c.h>
 del_fQ(Q4,8); //Q4 is 8 elements length delayed queue
 ```
 ### 2. Put where you want your tasks into queue, specifying delay (here example of 2 functions put into queue):
@@ -145,6 +148,7 @@ Q4_Revoke(your_func_1);
 Do you need just to delay some function from execution? Do not wait any more! 
 ### 1. Initialize:
 ```c
+#include <antirtos_c.h>
 del_fQP(Q5,8,int); //Q4 is 8 elements length delayed queue, int is example type of parameter - it may be your structure or standard one (float, int, long, char...)
 ```
 ### 2. Put where you want your tasks into queue, specifying delay (here example of 2 different functions put into the same queue):
