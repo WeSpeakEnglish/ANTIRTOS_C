@@ -72,7 +72,7 @@ void printSymbol(char ch){
  printf("Symbol: %c\n", ch);
 }
 ```
-### 3. In main loop (loop{} instead of main(){} for Arduino) just add:
+### 3. In main loop (loop(){} instead of main(){} for Arduino) just add:
 ```c
 void main(){
   Q1_Pull();  // pull from the Q1 and execute
