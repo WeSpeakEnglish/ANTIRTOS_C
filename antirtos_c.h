@@ -2,8 +2,8 @@
 #define ANTIRTOS_C_H 
 
 #define fQ(q, Q_SIZE)                            \
-    volatile int q##_last = 0;                   \
-    int q##_first = 0;                           \
+    volatile unsigned char q##_last = 0;          \
+    volatile unsigned char q##_first = 0;        \
     void (*q##_Queue[Q_SIZE])(void);             \
     int q##_Push(void (*pointerQ)(void)) {       \
         if ((q##_last + 1) % Q_SIZE == q##_first)\
@@ -88,8 +88,8 @@
 #define fQP(q, Q_SIZE, param_type)                                          \
     void (*q##_funcs[Q_SIZE])(param_type);                                  \
     param_type q##_params[Q_SIZE];                                          \
-    volatile int q##_last  = 0;                                             \
-    int q##_first = 0;                                                      \
+    volatile unsigned char q##_last  = 0;                                           \
+    volatile unsigned char q##_first = 0;                                           \
     int q##_Push(void (*func)(param_type), param_type params) {             \
         if ((q##_last + 1) % Q_SIZE == q##_first)                           \
             return 1;                                                       \
