@@ -1,178 +1,262 @@
-# ANTIRTOS#C
-<img src="https://github.com/WeSpeakEnglish/images/blob/main/ANTIRTOS_C.png">
+![ANTIRTOS_C](https://github.com/WeSpeakEnglish/images/raw/main/ANTIRTOS_C.png)
 
-No RTOS need, you will C! 
-Exteamly light, pure C preprocessor macros-based universal C library designed for task management in IoT and embedded applications. It is coded in a single, small file, making it incredibly easy to integrate into your projects. Enjoy the real simplicity!  
-Also: [here](https://hackaday.io/project/199046-antirtosc) 
+# ANTIRTOS_C
 
-Prefer C++? It is [ANTIRTOS C++ library](https://github.com/WeSpeakEnglish/ANTIRTOS) here and also fresh new [ANTIRTOS_MODERN](https://github.com/WeSpeakEnglish/ANTIRTOS_MODERN)
+### *No RTOS needed, you will C!*
 
-## Conveyers of functions without parameters
+ANTIRTOS_C is an ultra-lightweight, robust, and efficient pure C library for task management in IoT and embedded applications. Implemented as a single header file of preprocessor macros, it requires no dynamic memory allocation, no C++ compiler, and no RTOS — just drop in `antirtos_c.h` and go.
 
-### Usage
+Four macro variants cover every common need: **fQ** is the basic no-parameter queue, **fQP** adds a typed argument to queued functions, **del_fQ** adds a delay before execution, and **del_fQP** adds both.
 
-### 1. Initialize needed queues like global prototypes (as many as you need, here are two like example):
+Each queue expands to a statically allocated array of function pointers and a pair of generated functions: `_Push` adds a task to the back, `_Pull` executes the next task and removes it. Several queues can coexist, and all execution happens outside interrupts in a fully non-blocking way.
+
+Prefer C++? See [ANTIRTOS](https://github.com/WeSpeakEnglish/ANTIRTOS) and [ANTIRTOS_MODERN](https://github.com/WeSpeakEnglish/ANTIRTOS_MODERN).  
+Also on [Hackaday.io](https://hackaday.io/project/199046-antirtoscuno).
+
+### Benefits
+
+1. Interrupts kept fast and controllable — push a pointer and return immediately, no logic executes in the ISR.
+2. Easy to debug and understand — no hidden scheduler, no task stacks, no magic.
+3. Simple multitasking without critical sections, mutexes, or semaphores.
+4. No dummy waiting or blocking. Wait by doing!
+5. No heap allocation — all state is statically declared by the macro.
+6. Pure C (C99) — works on AVR, PIC, STM32, RISC-V, and any toolchain that has a C compiler.
+
+---
+
+## Queues without parameters — `fQ`
+
+### 1. Include and declare queues globally
+
 ```c
-#include <antirtos_c.h>
-  fQ(Q1,8); // define the first queue (type fQ) with name Q1, 8 elements length
-  fQ(Q2,8); // define the second queue (type fQ) with name Q2, 8 elements length
+#include "antirtos_c.h"
+
+fQ(Q1, 8); // queue named Q1, 8 slots (holds up to 7 tasks)
+fQ(Q2, 8); // queue named Q2, 8 slots
 ```
-### 2. Define your tasks:
+
+> One slot is always reserved to distinguish full from empty, so a queue of size N holds N−1 tasks.
+
+### 2. Define your tasks
+
 ```c
-void yourTaskOne(){
-//put here what ever you want to execute
+void yourTaskOne(void) {
+    // whatever you need to do
 }
 
-void yourTaskTwo(){
-//put here what ever you want to execute
+void yourTaskTwo(void) {
+    // whatever you need to do
 }
 ```
-### 3. In main loop (loop(){} instead of main(){} for Arduino) just pull from the queues
-```c
-void main(){ // or loop{} for Arduino
-  Q1_Pull(); // pull from the Q1 and execute
-  Q2_Pull(); // pull from the Q2 and execute
-}
-```
-### 4. Wherever you want, you can now push your tasks, they will be handled! (for example in some interrupts)
-```c
-void ISR_1(){
-  Q1_Push(yourTaskOne);  // just push your task into queue!
-}
-void ISR_2(){
-  Q2_Push(yourTaskTwo);  // just push your task into queue!
-}
-```
-*This is it! All the interrupts are kept extreamly fast, all the task handled*
 
-## Conveyers of functions with parameters
-Imagine now you need to pass parameters to functions in queue
+### 3. Pull in the main loop
 
+```c
+int main(void) {          // or loop(){} on Arduino
+    while (1) {
+        Q1_Pull();
+        Q2_Pull();
+    }
+}
+```
 
-### 1. Define all your queues:
-```c
-#include <antirtos_c.h>
- fQP(Q1,8,int);  //Q1 is 8 elements length, type fQP, functions receive int
- fQP(Q2,8,char); //Q2 is 8 elements length, type fQP, functions receive char
-```
-### 2. Define all your tasks, for example:
-```c
-#include <antirtos_c.h>
-void blinkLED(int led){
-  switch(led){
-    case 0: 
-      HAL_GPIO_TogglePin(LED_YELLOW_PORT, LED_YELLOW_PIN);
-      break;
-    case 1:
-      HAL_GPIO_TogglePin(LED_GREEN_PORT, LED_GREEN_PIN);
-      break;    
-  }
+### 4. Push from anywhere — ISRs, callbacks, other tasks
 
-void printSymbol(char ch){
- printf("Symbol: %c\n", ch);
+```c
+void ISR_1(void) {
+    Q1_Push(yourTaskOne); // ISR returns immediately; task runs in main loop
+}
+void ISR_2(void) {
+    Q2_Push(yourTaskTwo);
 }
 ```
-### 3. In main loop (loop(){} instead of main(){} for Arduino) just add:
+
+*That's it. Interrupts stay fast; tasks are handled safely outside the ISR.*
+
+---
+
+## Queues with parameters — `fQP`
+
+### 1. Declare queues with a parameter type
+
 ```c
-void main(){
-  Q1_Pull();  // pull from the Q1 and execute
-  Q2_Pull();  // pull from the Q2 and execute
+#include "antirtos_c.h"
+
+fQP(Q1, 8, int);  // Q1: 8 slots, functions receive int
+fQP(Q2, 8, char); // Q2: 8 slots, functions receive char
+```
+
+### 2. Define typed tasks
+
+```c
+void blinkLED(int led) {
+    switch (led) {
+        case 0: HAL_GPIO_TogglePin(LED_YELLOW_PORT, LED_YELLOW_PIN); break;
+        case 1: HAL_GPIO_TogglePin(LED_GREEN_PORT,  LED_GREEN_PIN);  break;
+    }
+}
+
+void printSymbol(char ch) {
+    printf("Symbol: %c\n", ch);
 }
 ```
-### 4. Where you want just push the tasks into queues and pass them parameter (for example in some interrupts again):
+
+### 3. Pull in the main loop
+
 ```c
-void ISR_1(void){
-  Q1_Push(blinkLED, 0); // just push your task into Q1 queue and parameter!
-  }
-void ISR_2(void){ 
-  Q2_Push(printSymbol, 'a'); // just push your task into Q2 queue and parameter!
-  }
-```
-### More parameters needed?
-Just wrap them into your custom structure, for example:
-```c
-typedef struct {
-    int index;
-    int logic;
-} pinout;
-```
-Task functions will receive here type *pinout*:
-```c
-void myTask(pinout p){
-// put here what ever you want, your task
+int main(void) {
+    while (1) {
+        Q1_Pull();
+        Q2_Pull();
+    }
 }
 ```
-Now you may initialize your queues, like:
+
+### 4. Push with parameter from ISR
+
 ```c
-#include <antirtos_c.h>
-fQP(Q3,8,pinout);  //Q3 is 8 elements length, type fQP, functions receive type 'pinout'
+void ISR_1(void) { Q1_Push(blinkLED,    0);   }
+void ISR_2(void) { Q2_Push(printSymbol, 'a'); }
 ```
-Push parameters now like:
+
+### Multiple parameters? Use a struct.
+
 ```c
- Q3_Push(myTask, (pinout){0,1}); //push your task into Q3 and passing arguments 
+typedef struct { int index; int logic; } pinout;
+
+void myTask(pinout p) { /* ... */ }
+
+fQP(Q3, 8, pinout); // queue with struct type
+
+// push:
+Q3_Push(myTask, (pinout){0, 1});
+
+// pull in main loop:
+Q3_Pull();
 ```
- In main loop (loop{} instead of main(){} for Arduino) as usual:
+
+---
+
+## Delayed queues without parameters — `del_fQ`
+
+Do you need to delay a function from execution? Do not wait any more!
+
+### 1. Declare
+
 ```c
-void main(void){
-  Q3_Pull();
-}
+del_fQ(Q4, 8); // 8-slot delayed queue
 ```
-## Delayed conveyers of functions without parameters
-Do you need just to delay some function from execution? Do not wait any more! 
-### 1. Initialize:
+
+### 2. Push with a delay (in ticks)
+
 ```c
-#include <antirtos_c.h>
-del_fQ(Q4,8); //Q4 is 8 elements length delayed queue
+Q4_Push_delayed(your_func_1, 1000); // your_func_1() executes after 1000 ticks
+Q4_Push_delayed(your_func_2, 2000); // your_func_2() executes after 2000 ticks
 ```
-### 2. Put where you want your tasks into queue, specifying delay (here example of 2 functions put into queue):
-```c
-Q4_Push_delayed(your_func_1, 1000); // function your_func_1() will be delayed for 1000 'ticks' (see calling Q4_Tick below)
-Q4_Push_delayed(your_func_2, 2000); // function your_func_2() will be delayed for 2000 'ticks'
-```
-### 3. In the main loop (in lopp(){} for Arduino) just need to:
+
+### 3. Pull in the main loop
+
 ```c
 Q4_Pull();
 ```
-### 4. In some timer or periodic function:
+
+### 4. Tick from a timer ISR
+
 ```c
-Q4_Tick();
-```
-That is it! 
-### 5. If you need to revoke a function from the delayed conveyer, use revocation 
-For example, you need to revoke **your_func_1**:
-```c
-Q4_Revoke(your_func_1);
+void TimerISR(void) {
+    Q4_Tick(); // call once per tick period (e.g. every 1 ms)
+}
 ```
 
-## Delayed conveyers of functions with parameters
-Do you need just to delay some function from execution? Do not wait any more! 
-### 1. Initialize:
+### 5. Revoke a pending function
+
 ```c
-#include <antirtos_c.h>
-del_fQP(Q5,8,int); //Q4 is 8 elements length delayed queue, int is example type of parameter - it may be your structure or standard one (float, int, long, char...)
+Q4_Revoke(your_func_1); // cancels all pending your_func_1 entries
 ```
-### 2. Put where you want your tasks into queue, specifying delay (here example of 2 different functions put into the same queue):
+
+---
+
+## Delayed queues with parameters — `del_fQP`
+
+### 1. Declare
+
 ```c
-Q5_Push_delayed(your_func_4, -15, 1000); // function your_func_4(-15) will be delayed for 1000 'ticks' (see calling Q4_Tick below), -15 here is parameter of *int* type
-Q5_Push_delayed(your_func_5, -27, 2000); // function your_func_5(-27) will be delayed for 2000 'ticks', -27 here is parameter of *int* type
+del_fQP(Q5, 8, int); // 8-slot delayed queue, functions receive int
 ```
-### 3. In the main loop (in lopp(){} for Arduino) just need to:
+
+### 2. Push with parameter and delay
+
+```c
+Q5_Push_delayed(your_func_4, -15, 1000); // your_func_4(-15) after 1000 ticks
+Q5_Push_delayed(your_func_5, -27, 2000); // your_func_5(-27) after 2000 ticks
+```
+
+### 3. Pull in the main loop
+
 ```c
 Q5_Pull();
 ```
-### 4. In some timer or periodic function:
+
+### 4. Tick from a timer ISR
+
 ```c
-Q5_Tick();
+void TimerISR(void) {
+    Q5_Tick();
+}
 ```
-That is it! 
-### 5. If you need to revoke a function from the delayed conveyer, use revocation 
-For example, you need to revoke **your_func_4**:
+
+### 5. Revoke a pending function
+
 ```c
 Q5_Revoke(your_func_4);
 ```
 
-**All functions are handled and executed automatically. Do not waste time — keep all interrupts extremely fast and never lose them! Use ANTIRTOS!**
+---
 
-See [the press button simulation on Thinkercad](https://www.tinkercad.com/things/dTtzrpBL7Oz-antirtoscuno)
-   
+## Wait by doing
+
+Instead of blocking with `delay()` or a busy loop, keep pulling tasks while you wait:
+
+```c
+void waitOnQ1(unsigned int ms) {
+    unsigned int target = millis() + ms;
+    while (millis() < target)
+        Q1_Pull();
+}
+
+// usage:
+digitalWrite(13, HIGH);
+waitOnQ1(1000);     // 1 second passes — tasks still run
+val = analogRead(3);
+```
+
+Or waiting for a condition:
+
+```c
+while (!neededFlag) {
+    Q1_Pull();
+    Q2_Pull();
+}
+```
+
+---
+
+## Tips
+
+- **Use queue sizes that are powers of 2** (4, 8, 16, 32, 64, 128) — the compiler replaces `% N` with a fast bitwise AND.
+
+- **One queue per interrupt** if interrupt priorities are uncertain. Mixing multiple ISRs into one queue is safe only when pushes cannot preempt each other.
+
+- **Group tasks by execution time** for better responsiveness:
+  1. Split functions into fast, medium, and slow groups, and give each group its own queue.
+  2. Pull fast tasks while waiting inside medium ones.
+  3. Pull medium and fast tasks while waiting inside slow ones.
+
+- **Maximum Q_SIZE is 256**, holding up to 255 tasks. Queue indices are `volatile unsigned char` — a single-instruction atomic read/write on both 8-bit (AVR, PIC) and 32-bit (Cortex-M, RISC-V) MCUs.
+
+---
+
+Try it: [Tinkercad simulation (Arduino/AVR)](https://www.tinkercad.com/things/dTtzrpBL7Oz-antirtoscuno)
+
+**Keep all interrupts extremely fast and never lose them. Use ANTIRTOS_C!**
 
